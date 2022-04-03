@@ -11,17 +11,17 @@ router.post("/", async (req, res) => {
 
     if (!email || !password || !passwordVerify)
       return res.status(400).json({
-        errorMessage: "Please enter all required fields.",
+        errorMessage: "Please make sure you have entered all required fields.",
       });
 
     if (password.length < 6)
       return res.status(400).json({
-        errorMessage: "Please enter a password of at least 6 characters.",
+        errorMessage: "Please enter a password of at least 6 characters to continue.",
       });
 
     if (password !== passwordVerify)
       return res.status(400).json({
-        errorMessage: "Please enter the same twice for verification.",
+        errorMessage: "Please make sure your passwords match for verification.",
       });
 
     // make sure no account exists for this email
@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({
-        errorMessage: "An account with this email already exists.",
+        errorMessage: "Sorry, an account with this email already exists.",
       });
 
     // hash the password
@@ -81,7 +81,7 @@ router.post("/login", async (req, res) => {
 
     if (!email || !password)
       return res.status(400).json({
-        errorMessage: "Please enter all required fields.",
+        errorMessage: "Please make sure to enter all required fields.",
       });
 
     // get user account
@@ -89,7 +89,7 @@ router.post("/login", async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (!existingUser)
       return res.status(401).json({
-        errorMessage: "Wrong email or password.",
+        errorMessage: "You have entered an incorrect e-mail or password.",
       });
 
     const correctPassword = await bcrypt.compare(
@@ -99,7 +99,7 @@ router.post("/login", async (req, res) => {
 
     if (!correctPassword)
       return res.status(401).json({
-        errorMessage: "Wrong email or password.",
+        errorMessage: "You have entered an incorrect e-mail or password.",
       });
 
     // create a JWT token

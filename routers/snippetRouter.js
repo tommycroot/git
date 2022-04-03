@@ -53,16 +53,16 @@ router.put("/:id", auth, async (req ,res) => {
         .status(400)
         .json({
           errorMessage:
-            "You need to enter at least a description or some code."
+            "Please enter at least a description or some code to continue :)"
         });
     }
 
     if (!snippetId)
-      return res.status(400).json({ errorMessage: "Snippet ID not given. Please contact the developer."});
+      return res.status(400).json({ errorMessage: "Snippet ID was not provided. Please contact the developer."});
 
     const originalSnippet = await Snippet.findById(snippetId);
     if (!originalSnippet)
-      return res.status(400).json({ errorMessage: "No snippet with this ID was found. Please contact the developer."});
+      return res.status(400).json({ errorMessage: "Your Snippet ID can not be found. Please contact the developer."});
 
     if (originalSnippet.user.toString() !== req.user)
       return res.status(401).json({ errorMessage: "Unauthorized." });
@@ -88,11 +88,11 @@ router.delete("/:id", auth, async (req, res) => {
     // validation
 
     if (!snippetId)
-      return res.status(400).json({ errorMessage: "Snippet ID not given. Please contact the developer."});
+      return res.status(400).json({ errorMessage: "A Snippet ID was not provided. Please contact the developer."});
 
     const existingSnippet = await Snippet.findById(snippetId);
     if (!existingSnippet)
-      return res.status(400).json({ errorMessage: "No snippet with this ID was found. Please contact the developer."});
+      return res.status(400).json({ errorMessage: "No snippet with this ID could be found. Please contact the developer."});
 
     if (existingSnippet.user.toString() !== req.user)
         return res.status(401).json({ errorMessage: "Unauthorized." });
